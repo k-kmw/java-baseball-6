@@ -1,5 +1,7 @@
 package baseball.model;
 
+import baseball.Result;
+
 import java.util.List;
 
 public class Referee {
@@ -8,10 +10,10 @@ public class Referee {
         Integer strikeCount = calculateStrikeCount(answerNumbers, inputNumbers);
 
         if (ballCount == 0 && strikeCount == 0) {
-            return "낫씽";
+            return Result.ZERO.get();
         }
         if (strikeCount == 3) {
-            return "3스트라이크";
+            return Result.STRIKE3.get();
         }
         return ballCount + "볼" + " " + strikeCount + "스트라이크";
     }

@@ -1,5 +1,7 @@
 package baseball.controller;
 
+import baseball.Constant;
+import baseball.Result;
 import baseball.model.Computer;
 import baseball.model.Referee;
 import baseball.view.InputView;
@@ -35,11 +37,11 @@ public class BaseballGameController {
             System.out.println(answerNumbers);
             outputView.pirntResult(result);
 
-            if (result.equals("3스트라이크")) {
-                outputView.print("3개의 숫자를 모두 맞히셨습니다! 게임 종료");
-                outputView.print("게임을 새로 시작하려면 1, 종료하려면 2를 입력하세요.");
+            if (result.equals(Result.STRIKE3.get())) {
+                outputView.printEndMessage();
+                outputView.printRestartMessage();
                 String isRestart = inputView.getIsRestart();
-                if (isRestart.equals("1")) {
+                if (isRestart.equals(Constant.RESTART_NUM.get())) {
                     answerNumbers = computer.generate3Numbers();
                     continue;
                 }
