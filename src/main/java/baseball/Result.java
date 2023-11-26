@@ -9,7 +9,7 @@ public enum Result {
         this.result = result;
     }
 
-    public String get() {
+    public String getString() {
         return result;
     }
 }

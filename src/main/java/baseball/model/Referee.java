@@ -10,10 +10,10 @@ public class Referee {
         Integer strikeCount = calculateStrikeCount(answerNumbers, inputNumbers);
 
         if (ballCount == 0 && strikeCount == 0) {
-            return Result.ZERO.get();
+            return Result.ZERO.getString();
         }
         if (strikeCount == 3) {
-            return Result.STRIKE3.get();
+            return Result.STRIKE3.getString();
         }
         return ballCount + "볼" + " " + strikeCount + "스트라이크";
     }

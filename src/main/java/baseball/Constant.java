@@ -1,7 +1,7 @@
 package baseball;
 
 public enum Constant {
-    RESTART_NUM("1");
+    RESTART_NUM("1"), END_NUM("2");
 
     private final String constant;
 

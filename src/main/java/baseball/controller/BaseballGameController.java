@@ -3,7 +3,7 @@ package baseball.controller;
 import baseball.Constant;
 import baseball.Result;
 import baseball.model.Computer;
-import baseball.model.UserInput;
+import baseball.model.dto.UserInput;
 import baseball.model.Referee;
 import baseball.view.InputView;
 import baseball.view.OutputView;
@@ -21,36 +21,50 @@ public class BaseballGameController {
     }
 
     public void start() {
-        // 위 숫자 야구 게임에서 상대방의 역할을 컴퓨터가 한다. 컴퓨터는 1에서 9까지 서로 다른 임의의 수 3개를 선택한다.
         Computer computer = new Computer();
+        Referee referee = new Referee();
+
+        processGame(referee, computer);
+    }
+
+    private void processGame(Referee referee, Computer computer) {
+        String gameStatus = "";
         List<Integer> answerNumbers = computer.generate3Numbers();
-
         outputView.printStartMessage();
-
-        while(true) {
-
-            outputView.printInputNumbersMessage();
-            String input3Numbers = inputView.get3Numbers();
-            UserInput.GuessNumbersDTO validatedInputNumbersDTO = new UserInput.GuessNumbersDTO(input3Numbers);
-            List<Integer> guessNumbers = validatedInputNumbersDTO.toList();
-
-            Referee referee = new Referee();
-            String result = referee.judge(answerNumbers, guessNumbers);
-
-            System.out.println(answerNumbers);
+        while(!gameStatus.equals(Constant.END_NUM.get())) {
+            List<Integer> validatedGuessNums = getValidatedGuessNums();
+            String result = getResult(referee, answerNumbers, validatedGuessNums);
             outputView.pirntResult(result);
-
-            if (result.equals(Result.STRIKE3.get())) {
+            if (result.equals(Result.STRIKE3.getString())) {
                 outputView.printEndMessage();
-                outputView.printRestartMessage();
-                String isRestart = inputView.getIsRestart();
-                UserInput.restartNumberDTO validatedRestartNumberDTO = new UserInput.restartNumberDTO(isRestart);
-                if (validatedRestartNumberDTO.getNum().equals(Constant.RESTART_NUM.get())) {
-                    answerNumbers = computer.generate3Numbers();
-                    continue;
-                }
-                break;
+                gameStatus = getGameStatus();
+                answerNumbers = handleRestart(computer, gameStatus);
             }
         }
+    }
+
+    private List<Integer> getValidatedGuessNums() {
+        outputView.printInputNumbersMessage();
+        String input3Numbers = inputView.get3Numbers();
+        UserInput.GuessNumbersDTO validatedInputNumbersDTO = new UserInput.GuessNumbersDTO(input3Numbers);
+        return validatedInputNumbersDTO.toList();
+    }
+
+    private String getResult(Referee referee, List<Integer> answerNumbers, List<Integer> guessNumbers) {
+        return referee.judge(answerNumbers, guessNumbers);
+    }
+
+    private String getGameStatus() {
+        outputView.printRestartMessage();
+        String isRestart = inputView.getIsRestart();
+        UserInput.restartNumberDTO validatedRestartNumberDTO = new UserInput.restartNumberDTO(isRestart);
+        return validatedRestartNumberDTO.getRestartNum();
+    }
+
+    private List<Integer> handleRestart(Computer computer, String gameStatus) {
+        if (gameStatus.equals(Constant.RESTART_NUM.get())) {
+            return computer.generate3Numbers();
+        }
+        return null;
     }
 }

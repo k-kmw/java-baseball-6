@@ -1,4 +1,4 @@
-package baseball.model;
+package baseball.model.dto;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,15 +32,15 @@ public class UserInput {
     }
 
     public static class restartNumberDTO {
-        private final String num;
+        private final String restartNum;
 
         public restartNumberDTO(String num) {
             validate(num);
-            this.num = num;
+            this.restartNum = num;
         }
 
-        public String getNum() {
-            return num;
+        public String getRestartNum() {
+            return restartNum;
         }
 
         private void validate(String num) {
