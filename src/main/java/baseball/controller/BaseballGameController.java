@@ -3,6 +3,7 @@ package baseball.controller;
 import baseball.Constant;
 import baseball.Result;
 import baseball.model.Computer;
+import baseball.model.UserInput;
 import baseball.model.Referee;
 import baseball.view.InputView;
 import baseball.view.OutputView;
@@ -29,10 +30,12 @@ public class BaseballGameController {
         while(true) {
 
             outputView.printInputNumbersMessage();
-            List<Integer> inputNumbers = inputView.get3Numbers();
+            String input3Numbers = inputView.get3Numbers();
+            UserInput.GuessNumbersDTO validatedInputNumbersDTO = new UserInput.GuessNumbersDTO(input3Numbers);
+            List<Integer> guessNumbers = validatedInputNumbersDTO.toList();
 
             Referee referee = new Referee();
-            String result = referee.judge(answerNumbers, inputNumbers);
+            String result = referee.judge(answerNumbers, guessNumbers);
 
             System.out.println(answerNumbers);
             outputView.pirntResult(result);
@@ -41,7 +44,8 @@ public class BaseballGameController {
                 outputView.printEndMessage();
                 outputView.printRestartMessage();
                 String isRestart = inputView.getIsRestart();
-                if (isRestart.equals(Constant.RESTART_NUM.get())) {
+                UserInput.restartNumberDTO validatedRestartNumberDTO = new UserInput.restartNumberDTO(isRestart);
+                if (validatedRestartNumberDTO.getNum().equals(Constant.RESTART_NUM.get())) {
                     answerNumbers = computer.generate3Numbers();
                     continue;
                 }
