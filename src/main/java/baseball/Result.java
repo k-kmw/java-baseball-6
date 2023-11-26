@@ -1,7 +1,7 @@
 package baseball;
 
 public enum Result {
-    ZERO("낫씽"), STRIKE3("3스트라이크");
+    ZERO("낫싱"), STRIKE3("3스트라이크");
 
     private final String result;
 
