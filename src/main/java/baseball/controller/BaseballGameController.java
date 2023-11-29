@@ -46,10 +46,18 @@ public class BaseballGameController {
     }
 
     private List<Integer> getValidatedGuessNums() {
-        outputView.printInputNumbersMessage();
-        String input3Numbers = inputView.get3Numbers();
-        UserInput.GuessNumbersDTO validatedInputNumbersDTO = new UserInput.GuessNumbersDTO(input3Numbers);
-        return validatedInputNumbersDTO.toList();
+        while(true) {
+            try {
+                outputView.printInputNumbersMessage();
+                String input3Numbers = inputView.get3Numbers();
+                UserInput.GuessNumbersDTO validatedInputNumbersDTO = new UserInput.GuessNumbersDTO(input3Numbers);
+                return validatedInputNumbersDTO.toList();
+            } catch (IllegalArgumentException e) {
+                System.out.println("[Error] 유효하지 않는 입력입니다. " + e.getMessage());
+            }
+
+        }
+
     }
 
     private String getGameStatus() {
