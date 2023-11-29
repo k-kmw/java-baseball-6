@@ -4,10 +4,18 @@ import baseball.Result;
 
 import java.util.List;
 
+// 예측 결과를 결정하는 책임
 public class Referee {
+
+    private final Comparator comparator;
+
+    public Referee(Comparator comparator) {
+        this.comparator = comparator;
+    }
+
     public String judge(List<Integer> answerNumbers, List<Integer> inputNumbers) {
-        Integer ballCount = calculateBallCount(answerNumbers, inputNumbers);
-        Integer strikeCount = calculateStrikeCount(answerNumbers, inputNumbers);
+        Integer ballCount = comparator.calculateBallCount(answerNumbers, inputNumbers);
+        Integer strikeCount = comparator.calculateStrikeCount(answerNumbers, inputNumbers);
 
         if (ballCount == 0 && strikeCount == 0) {
             return Result.ZERO.getString();
@@ -16,31 +24,5 @@ public class Referee {
             return Result.STRIKE3.getString();
         }
         return ballCount + "볼" + " " + strikeCount + "스트라이크";
-    }
-
-    private Integer calculateBallCount(List<Integer> answerNumbers, List<Integer> inputNumbers) {
-        int ballCount = 0;
-        for (int i = 0; i < inputNumbers.size(); i++) {
-            for (int j = 0; j < answerNumbers.size(); j++) {
-                if (i == j) continue;
-                if(inputNumbers.get(i).equals(answerNumbers.get(j))) {
-                    ballCount++;
-                }
-            }
-        }
-        return ballCount;
-    }
-
-
-    private Integer calculateStrikeCount(List<Integer> answerNumbers, List<Integer> inputNumbers) {
-        int strikeCount = 0;
-        int idx = 0;
-        while (idx < answerNumbers.size()) {
-            if(answerNumbers.get(idx).equals(inputNumbers.get(idx))) {
-                strikeCount++;
-            }
-            idx++;
-        }
-        return strikeCount;
     }
 }

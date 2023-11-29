@@ -1,5 +1,6 @@
 package baseball.domain;
 
+import baseball.model.Comparator;
 import baseball.model.Computer;
 import baseball.model.Referee;
 import org.assertj.core.api.Assertions;
@@ -19,7 +20,7 @@ public class RefereeTest {
     void judgeTest(List<Integer> inputNums, String expected) {
         // given
         List<Integer> answerNums = List.of(1, 2, 3);
-        Referee referee = new Referee();
+        Referee referee = new Referee(new Comparator());
 
         // when
         String result = referee.judge(answerNums, inputNums);
